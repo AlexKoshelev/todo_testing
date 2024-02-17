@@ -4,11 +4,15 @@ import { RootState } from "./configureStore";
 
 export interface taskListState {
   list: Task[];
+  isFiltred: boolean;
+  filtredList: Task[];
   notification: string;
 }
 
 const initialState: taskListState = {
   list: [],
+  filtredList: [],
+  isFiltred: false,
   notification: "",
 };
 
@@ -22,6 +26,14 @@ export const taskListSlice = createSlice({
         header: action.payload,
         done: false,
       });
+    },
+    toggleFilter: (state) => {
+      state.isFiltred = !state.isFiltred;
+      if (state.isFiltred) {
+        state.filtredList = state.list.filter((task) => !task.done);
+      } else {
+        state.filtredList = [];
+      }
     },
     completeTask: (state, action: PayloadAction<Task["id"]>) => {
       const task = state.list.find((x) => x.id === action.payload);
@@ -59,19 +71,27 @@ export const {
   deleteTask,
   toggleTask,
   clearNotification,
+  toggleFilter,
 } = taskListSlice.actions;
 
 export default taskListSlice.reducer;
+export const tasksSelector = (state: RootState) =>
+  state.taskList.isFiltred ? state.taskList.filtredList : state.taskList.list;
 
-export const tasksSelector = (state: RootState) => state.taskList.list;
-
-export const fullCount = (state: RootState) => state.taskList.list.length;
+export const fullCount = (state: RootState) =>
+  state.taskList.isFiltred
+    ? state.taskList.filtredList.length
+    : state.taskList.list.length;
 
 export const completeCount = (state: RootState) =>
-  state.taskList.list.filter((x) => x.done).length;
+  state.taskList.isFiltred
+    ? state.taskList.filtredList.filter((x) => x.done).length
+    : state.taskList.list.filter((x) => x.done).length;
 
 export const uncompleteCount = (state: RootState) =>
-  state.taskList.list.filter((x) => !x.done).length;
+  state.taskList.isFiltred
+    ? state.taskList.filtredList.filter((x) => !x.done).length
+    : state.taskList.list.filter((x) => !x.done).length;
 
 export const getNotification = (state: RootState) =>
-  state.taskList.notification
+  state.taskList.notification;

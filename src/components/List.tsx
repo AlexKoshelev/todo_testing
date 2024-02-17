@@ -9,11 +9,7 @@ type Props = {
 export const List = ({ items, onDelete, onToggle }: Props) => (
   <ul className="task-list tasks">
     {items.map((item) => (
-      <Item
-        {...item}
-        key={item.id}
-        onDelete={onDelete}
-        onToggle={onToggle} />
+      <Item {...item} key={item.id} onDelete={onDelete} onToggle={onToggle} />
     ))}
   </ul>
 );

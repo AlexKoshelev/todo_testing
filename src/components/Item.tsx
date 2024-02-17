@@ -10,6 +10,7 @@ export const Item = (props: Props) => {
     <li className="item-wrapper">
       <input
         type="checkbox"
+        data-testid={`task-filter-checkbox`}
         id={props.id}
         defaultChecked={props.done}
         onChange={() => props.onToggle(props.id)}
