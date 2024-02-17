@@ -58,14 +58,4 @@ describe("Список задач", () => {
 
     expect(hideBtn.textContent).toBe("Показать выполненные задачи");
   });
-
-  it("Кнопка не активна, если нет выполненных задачь", async () => {
-    render(<App />, { wrapper: JestStoreProvider });
-
-    const tasks = screen.queryAllByRole("checkbox");
-    const filterBtn = screen.getByText("Показать выполненные задачи");
-
-    await userEvent.click(tasks[0]);
-    screen.debug();
-  });
 });
